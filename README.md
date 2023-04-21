@@ -1,5 +1,4 @@
-English | [简体中文](https://github.com/niubir/logger/blob/main/README.en.md)
-# logger
+English | [简体中文](https://github.com/niubir/logger/blob/main/helper/README-cn.md)
 
 ## Usage
 
@@ -40,5 +39,3 @@ logger.Error("This Error")
 | WithDuration | 365 day | log file duration |
 | WithMaxByte | 1024 | log file max byte |
 | WithStack | false | log stack |
-
-@import "https://github.com/niubir/logger/blob/main/helper/README-cn.md"
