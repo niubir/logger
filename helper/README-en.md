@@ -1,16 +1,16 @@
-# logger
+English | [简体中文](https://github.com/niubir/logger/blob/main/helper/README-cn.md)
 
-## 用法
+## Usage
 
-### 开始使用
+### Start using it
 
-1. 下载
+1. Download logger for Go by using
 
 ```sh
 go get -u github.com/niubir/logger
 ```
 
-2. 构造logger对象
+2. Constructing a logger object
 
 ```go
 import "github.com/niubir/logger"
@@ -18,7 +18,7 @@ import "github.com/niubir/logger"
 logger := logger.NewLogger()
 ```
 
-3. 使用
+3. Use
    
 ```go
 logger.Debug("This debug")
@@ -27,9 +27,9 @@ logger.Warn("This Warn")
 logger.Error("This Error")
 ```
 
-## 配置选项
+## Configuration option
 
-| 选项 | 默认值 | 描述 |
+| Option | Default | Description |
 | - | - | - |
 | WithLevel | Info | log level(Debug Info Warn Error) |
 | WithTimeFormat | - | log with time(Use golang time layout) |
