@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"fmt"
 	"io"
 	"os"
 )
@@ -48,6 +49,18 @@ func (l *Logger) Info(msg string, i ...interface{}) { l.log(InfoLevel, msg, i...
 func (l *Logger) Warn(msg string, i ...interface{}) { l.log(WarnLevel, msg, i...) }
 
 func (l *Logger) Error(msg string, i ...interface{}) { l.log(ErrorLevel, msg, i...) }
+
+func (l *Logger) Fatal(i ...interface{}) { l.log(ErrorLevel, fmt.Sprint(i...)) }
+
+func (l *Logger) Fatalf(format string, i ...interface{}) { l.log(ErrorLevel, format, i...) }
+
+func (l *Logger) Fatalln(i ...interface{}) { l.log(ErrorLevel, fmt.Sprint(i...)+"\n") }
+
+func (l *Logger) Print(i ...interface{}) { l.log(InfoLevel, fmt.Sprint(i...)) }
+
+func (l *Logger) Printf(msg string, i ...interface{}) { l.log(InfoLevel, msg, i...) }
+
+func (l *Logger) Println(i ...interface{}) { l.log(InfoLevel, fmt.Sprint(i...)+"\n") }
 
 func (l *Logger) log(level level, msg string, i ...interface{}) {
 	if level < l.opts.level {
