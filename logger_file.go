@@ -12,7 +12,7 @@ const (
 )
 
 type FileLogger struct {
-	opts options
+	option fileOption
 
 	start time.Time
 	end   time.Time
@@ -22,22 +22,23 @@ type FileLogger struct {
 	fileByte int64
 }
 
-func NewFileLogger(opts ...Option) (*FileLogger, error) {
-	var optObj options
-	for _, opt := range opts {
-		opt.f(&optObj)
+func NewFileLogger(options ...FileOption) (*FileLogger, error) {
+	var option fileOption
+	for _, o := range options {
+		o.f(&option)
 	}
-	optObj.compair()
-
-	return NewFileLoggerByOpts(optObj)
+	return NewFileLoggerByOpts(option)
 }
 
-func NewFileLoggerByOpts(opts options) (*FileLogger, error) {
+func NewFileLoggerByOpts(option fileOption) (*FileLogger, error) {
+	option.init()
+
 	fl := &FileLogger{
-		opts: opts,
+		option: option,
 
 		mu: sync.Mutex{},
 	}
+
 	fl.updateDuration(time.Now())
 	return fl, nil
 }
@@ -46,7 +47,7 @@ func (fw *FileLogger) Write(b []byte) (n int, err error) {
 	fw.mu.Lock()
 	defer fw.mu.Unlock()
 
-	maxByte := fw.opts.maxByte
+	maxByte := fw.option.maxByte
 	writeByte := int64(len(b))
 
 	if writeByte > maxByte {
@@ -67,8 +68,8 @@ func (fw *FileLogger) setFile() error {
 	for suffix := 0; ; suffix++ {
 		filename := fmt.Sprintf(
 			"%s/%s%s",
-			fw.opts.path,
-			fw.opts.prefix,
+			fw.option.path,
+			fw.option.prefix,
 			fw.start.Format(duration_layout),
 			// suffix,
 		)
@@ -102,7 +103,7 @@ func (fw *FileLogger) inDuration(t time.Time) bool {
 
 func (fw *FileLogger) updateDuration(t time.Time) {
 	fw.start = t
-	fw.end = fw.start.Add(fw.opts.duration)
+	fw.end = fw.start.Add(fw.option.duration)
 }
 
 func (fw *FileLogger) fileExists(filename string) (bool, error) {

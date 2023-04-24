@@ -27,43 +27,47 @@ func initTestLogPath() {
 func TestLogger(t *testing.T) {
 	initTestLogPath()
 	logger, err := NewLogger(
-		WithPath("./logs"),
-		WithPrefix("test"),
-		WithStdout(true),
-		WithTimeFormat(time.RFC3339Nano),
-		WithLevel(DebugLevel),
-		WithStack(true),
+		SetLevel(DebugLevel),
+		WithTime(time.Stamp),
+		WithStack(),
+		WithStdout(),
+		WithFileout(
+			WithFilePath(test_log_path),
+			WithFilePrefix("test"),
+		),
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	logger.Debug("test debug")
-	logger.Info("test info")
-	logger.Warn("test warn")
-	logger.Error("test error")
+	logger.Debugln("test debug")
+	logger.Infoln("test info")
+	logger.Warningln("test warning")
+	logger.Errorln("test error")
 }
 
 func TestLoggerWithDuration(t *testing.T) {
 	initTestLogPath()
 	logger, err := NewLogger(
-		WithPath("./logs"),
-		WithPrefix("test"),
-		WithStdout(true),
-		WithTimeFormat(time.RFC3339Nano),
-		WithLevel(DebugLevel),
-		WithStack(true),
-		WithDuration(10*time.Second),
+		SetLevel(DebugLevel),
+		WithTime(time.Stamp),
+		WithStack(),
+		WithStdout(),
+		WithFileout(
+			WithFilePath(test_log_path),
+			WithFilePrefix("test"),
+			WithFileDuration(10*time.Second),
+		),
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	for i := 0; i < 5; i++ {
-		logger.Debug("test debug duration %d", i)
-		logger.Info("test info duration %d", i)
-		logger.Warn("test warn duration %d", i)
-		logger.Error("test error duration %d", i)
+		logger.Debugf("test debug duration %d\n", i)
+		logger.Infof("test info duration %d\n", i)
+		logger.Warningf("test warning duration %d\n", i)
+		logger.Errorf("test error duration %d\n", i)
 		time.Sleep(7 * time.Second)
 	}
 }
